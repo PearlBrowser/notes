@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Taking Integration</title>
+    <style>
+        .note-title {
+            font-weight: bold;
+        }
+        .note-contents {
+            font-style: italic;
+        }
+        .note-contents u {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="note">
+        <div class="note-title">%note-title</div>
+        <div class="note-contents">%note-contents</div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var noteTitleElement = document.querySelector('.note-title');
+            var noteContentsElement = document.querySelector('.note-contents');
+            
+            // Get the parameters from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var noteTitle = urlParams.get('note-title');
+            var noteContents = urlParams.get('note-contents');
+            
+            // Interpret formatting codes
+            noteContents = noteContents.replace(/%nl/g, '<br>');
+            noteContents = noteContents.replace(/%20/g, ' ');
+            noteContents = noteContents.replace(/%bo/g, '');
+            noteContents = noteContents.replace(/%it/g, '');
+            noteContents = noteContents.replace(/%un/g, '');
+            
+            // Remove emojis
+            noteContents = noteContents.replace(/[\uD800-\uDFFF]./g, '');
+            
+            // Update HTML with the interpreted values
+            noteTitleElement.innerHTML = noteTitle;
+            noteContentsElement.innerHTML = noteContents;
+        });
+    </script>
+</body>
+</html>
